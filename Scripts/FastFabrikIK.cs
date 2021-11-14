@@ -6,12 +6,14 @@ public class FastFabrikIK : MonoBehaviour
     [SerializeField] private int chainLength = 2;
 
     [SerializeField] public Transform target;
-
+	
+	[SerializeField] private int iterations = 10;
+	[SerializeField] private float delta = 0.01f;
+	
     protected Transform[] bones;
     protected Vector3[] positions;
     protected float[] boneLengths;
     protected float totalLength;
-	[SerializeField] private int iterations;
 
 	private void Start()
     {
@@ -92,6 +94,33 @@ public class FastFabrikIK : MonoBehaviour
 			//my new position is the position of my parent + my bone length in direction 'dir'
 			for (var i = 1; i < positions.Length; i++)
 				positions[i] = positions[i - 1] + dir * boneLengths[i - 1];
+		}
+		else
+		{
+			for (var iteration = 0; iteration < iterations; iteration++)
+			{
+				//backwards pass
+				for (var i = positions.Length - 1; i > 0; i--)
+				{
+					if (i == positions.Length - 1)
+						positions[i] = target.position;
+					else
+						positions[i] =
+							positions[i + 1] + 
+							(positions[i] - positions[i + 1]).normalized * boneLengths[i];
+				}
+				
+				//forward pass
+				for (int i = 1; i < positions.Length - 1; i++)
+					positions[i] = 
+						positions[i - 1] +
+						(positions[i] - positions[i - 1]).normalized * boneLengths[i - 1];
+				
+				
+				//close enough?
+				if((positions[positions.Length - 1] - target.position).sqrMagnitude > delta * delta)
+					break;
+			}
 		}
 		
 		//set positions

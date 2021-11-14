@@ -190,6 +190,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: armature
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c1feaedc8e6602d46919442691e4bb87, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8879528566716807029, guid: c1feaedc8e6602d46919442691e4bb87, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -490,6 +494,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &744288137 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5506977543257564031, guid: c1feaedc8e6602d46919442691e4bb87, type: 3}
+  m_PrefabInstance: {fileID: 15712294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &744288139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744288137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda11a82845e2d64580683e0d3e9e2fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chainLength: 3
+  target: {fileID: 144345538}
+  iterations: 0
+  delta: 0.01
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,6 +743,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chainLength: 3
   target: {fileID: 144345538}
+  iterations: 10
+  delta: 0.01
 --- !u!135 &1832198680
 SphereCollider:
   m_ObjectHideFlags: 0
