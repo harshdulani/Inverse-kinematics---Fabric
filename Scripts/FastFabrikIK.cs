@@ -5,7 +5,7 @@ public class FastFabrikIK : MonoBehaviour
 {
     [SerializeField] private int chainLength = 2;
 
-    [SerializeField] public Transform target;
+    [SerializeField] public Transform target, pole;
 	
 	[SerializeField] private int iterations = 10;
 	[SerializeField] private float delta = 0.01f;
@@ -111,6 +111,7 @@ public class FastFabrikIK : MonoBehaviour
 				}
 				
 				//forward pass
+				//maybe cache the final forward pass direction calculations
 				for (int i = 1; i < positions.Length - 1; i++)
 					positions[i] = 
 						positions[i - 1] +
@@ -123,8 +124,25 @@ public class FastFabrikIK : MonoBehaviour
 			}
 		}
 		
+		//move towards pole
+		if (pole)
+		{
+			for (int i = 1; i < positions.Length - 1; i++)
+			{
+				var plane = new Plane(positions[i + 1] - positions[i - 1], positions[i - 1]);
+				var projectedPole = plane.ClosestPointOnPlane(pole.position);
+				var projectedBone = plane.ClosestPointOnPlane(positions[i]);
+				var angle = Vector3.SignedAngle(
+					projectedBone - positions[i - 1], 
+					projectedPole - positions[i - 1],
+					plane.normal);
+				positions[i] = Quaternion.AngleAxis(angle, plane.normal) * (positions[i] - positions[i - 1]) +
+							   positions[i - 1];
+			}
+		}
+		
 		//set positions
 		for (int i = 0; i < bones.Length; i++)
-			bones[i].position = positions[i]; 
+			bones[i].position = positions[i];
 	}
 }
